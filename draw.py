@@ -1,12 +1,36 @@
 from display import *
 from matrix import *
+import math
 
 
 def add_circle( points, cx, cy, cz, r, step ):
-    pass
+    velocity = float((2*math.pi) / step)
+    t = 0.0
+    while (t <= 10) :
+        x1 = cx + r * math.cos(t)
+        y1 = cy + r * math.sin(t)
+        t += velocity
+        x2 = cx + r * math.cos(t)
+        y2 = cy + r * math.sin(t)
+        add_edge(points, x1, y1, cz, x2, y2, cz)
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
-    pass
+    velocity = 1 / step
+    if curve_type == "hermite":
+        x,y = make_hermite(x0, y0, x1, y1, x2, y2, x3, y3)
+    else:
+        x,y = make_bezier(x0, y0, x1, y1, x2, y2, x3, y3)
+    t = 0.0
+    while t <= 10:
+        firstX = x[0] * math.pow(t, 3) + x[1] * math.pow(t, 2) * x[2] * t + x[3]
+        firstY = y[0] * math.pow(t, 3) + y[1] * math.pow(t, 2) * y[2] * t + y[3]
+
+        t += velocity
+
+        secondX = x[0] * math.pow(t, 3) + x[1] * math.pow(t, 2) * x[2] * t + x[3]
+        secondY = y[0] * math.pow(t, 3) + y[1] * math.pow(t, 2) * y[2] * t + y[3]
+
+        add_edge(points, firstX, firstY, 0, secondX, secondY, 0)
 
 
 def draw_lines( matrix, screen, color ):
