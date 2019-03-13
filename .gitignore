@@ -46,3 +46,5 @@
 # Debug files
 *.dSYM/
 *.su
+# Python Cache Folder
+__pycache__
