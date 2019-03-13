@@ -55,7 +55,7 @@ def save_extension( screen, fname ):
 def display( screen ):
     ppm_name = 'pic.ppm'
     save_ppm( screen, ppm_name )
-    p = subprocess.run('display pic.ppm')
+    p = subprocess.run(['display pic.ppm'], shell=True)
     if p.stderr != None:
         print(f'err with display: {p.stderr}')
     remove(ppm_name)
