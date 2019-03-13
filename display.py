@@ -47,10 +47,10 @@ def save_ppm( screen, fname ):
 def save_extension( screen, fname ):
     ppm_name = fname[:fname.find('.')] + '.ppm'
     save_ppm( screen, ppm_name )
-    p = subprocess.run(f'convert {ppm_name} face.png')
+    p = subprocess.run(f'convert {ppm_name} {fname}')
     if p.stderr != None:
         print(f'err with subprocess: {p.stderr}')
-    remove(ppm_name)
+    # remove(ppm_name)
 
 def display( screen ):
     ppm_name = 'pic.ppm'
@@ -58,5 +58,5 @@ def display( screen ):
     p = subprocess.run('imdisplay.exe pic.ppm')
     if p.stderr != None:
         print(f'err with display: {p.stderr}')
-    remove(ppm_name)
+    # remove(ppm_name)
 
