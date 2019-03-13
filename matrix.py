@@ -12,11 +12,58 @@ import math
 def make_bezier():
     pass
 
-def make_hermite():
-    pass
+def make_hermite(x1, y1, x2, y2, rx1, ry1, rx2, ry2):
+    curve_list = generate_curve_coefs([x1, y1], [x2, y2], [rx1, ry1], [rx2, ry2], True)
+    return curve_list
 
 def generate_curve_coefs( p1, p2, p3, p4, t ):
-    pass
+    temp = new_matrix()
+    coef = new_matrix(4, 1)
+    coef[0][0] = p1
+    coef[1][0] = p2
+    coef[2][0] = p3
+    coef[3][0] = p4
+    if t :
+        # do hermite curves
+        temp[0][0] = 2
+        temp[0][1] = -3
+        temp[0][3] = 1
+        temp[1][0] = -2
+        temp[1][0] = 3
+        temp[2][0] = 1
+        temp[2][1] = -2
+        temp[2][2] = 1
+        temp[3][0] = 0
+        temp[3][1] = -1
+
+        x = new_matrix(4, 1)
+        y = new_matrix(4, 1)
+        x[0][0] = p1[0]
+        y[0][0] = p1[1]
+        x[1][0] = p2[0]
+        y[1][0] = p2[1]
+        x[2][0] = p3[0]
+        y[2][0] = p3[1]
+        x[3][0] = p4[0]
+        y[3][0] = p4[1]
+        matrix_mult(temp, x)
+        matrix_mult(temp, y)
+        coef = [x, y]
+        return coef
+    else:
+        # do a bezier curve
+        temp[0][0] = -1
+        temp[1][0] = 3
+        temp[2][0] = -3
+        temp[3][0] = 1
+        temp[0][1] = 3
+        temp[1][1] = -6
+        temp[2][1] = 3
+        temp[0][2] = -3
+        temp[1][2] = 3
+        temp[0][3] = 1
+        matrix_mult(temp, coef)
+    return coef
 
 
 def make_translate( x, y, z ):
@@ -70,7 +117,7 @@ def print_matrix( matrix ):
         for c in range( len(matrix) ):
             s+= str(matrix[c][r]) + ' '
         s+= '\n'
-    print s
+    print(s)
     
 #turn the paramter matrix into an identity matrix
 #you may assume matrix is square
