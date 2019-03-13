@@ -1,13 +1,15 @@
-import display as show
-import draw as d
-import parser as p
-import matrix as m
+import sys
+sys.path.append("./")
+from display import *
+from draw import *
+from pyparser import *
+from matrix import *
 import math
 
-screen = show.new_screen()
+screen = new_screen()
 color = [ 0, 255, 0 ]
 edges = []
-transform = m.new_matrix()
+transform = new_matrix()
 
 # print_matrix( make_translate(3, 4, 5) )
 # print
@@ -19,4 +21,4 @@ transform = m.new_matrix()
 # print
 # print_matrix( make_rotZ(math.pi/4) )
 
-p.parse_file( 'script', edges, transform, screen, color )
+parse_file( 'script', edges, transform, screen, color )
