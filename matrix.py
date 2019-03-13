@@ -9,61 +9,37 @@ z0  z1  ... zn
 """
 import math
 
-def make_bezier():
-    pass
+def make_bezier(x1, y1, x2, y2, x3, y3, x4, y4):
+    x = generate_curve_coefs(x1, x2, x3, x4, False)
+    y = generate_curve_coefs(y1, y2, y3, y4, False)
+    return x,y
 
 def make_hermite(x1, y1, x2, y2, rx1, ry1, rx2, ry2):
-    curve_list = generate_curve_coefs([x1, y1], [x2, y2], [rx1, ry1], [rx2, ry2], True)
-    return curve_list
+    return generate_curve_coefs([x1, y1], [x2, y2], [rx1, ry1], [rx2, ry2], True)
 
 def generate_curve_coefs( p1, p2, p3, p4, t ):
     temp = new_matrix()
-    coef = new_matrix(4, 1)
-    coef[0][0] = p1
-    coef[1][0] = p2
-    coef[2][0] = p3
-    coef[3][0] = p4
+    coef = [[p1, p2, p3, p4]]
     if t :
         # do hermite curves
-        temp[0][0] = 2
-        temp[0][1] = -3
-        temp[0][3] = 1
-        temp[1][0] = -2
-        temp[1][0] = 3
-        temp[2][0] = 1
-        temp[2][1] = -2
-        temp[2][2] = 1
-        temp[3][0] = 0
-        temp[3][1] = -1
-
-        x = new_matrix(4, 1)
-        y = new_matrix(4, 1)
-        x[0][0] = p1[0]
-        y[0][0] = p1[1]
-        x[1][0] = p2[0]
-        y[1][0] = p2[1]
-        x[2][0] = p3[0]
-        y[2][0] = p3[1]
-        x[3][0] = p4[0]
-        y[3][0] = p4[1]
-        matrix_mult(temp, x)
-        matrix_mult(temp, y)
-        coef = [x, y]
-        return coef
+        temp.append([2,-3,0,1])
+        temp.append([-2,3,0,0])
+        temp.append([1,-2,1,0])
+        temp.append([1,-1,0,0])
+        x = [[p1[0], p2[0], p3[0], p4[0]]]
+        y = [[p1[1],p2[1],p3[1], p4[1]]]
+        matrix_mult(temp,x)
+        matrix_mult(temp,y)
+        return x[0],y[0]
     else:
         # do a bezier curve
-        temp[0][0] = -1
-        temp[1][0] = 3
-        temp[2][0] = -3
-        temp[3][0] = 1
-        temp[0][1] = 3
-        temp[1][1] = -6
-        temp[2][1] = 3
-        temp[0][2] = -3
-        temp[1][2] = 3
-        temp[0][3] = 1
-        matrix_mult(temp, coef)
-    return coef
+        coef = [[p1, p2, p3, p4]]
+        temp.append([-1,3,-3,1])
+        temp.append([3,-6,3,0])
+        temp.append([-3,3,0,0])
+        temp.append([1,0,0,0])
+        matrix_mult(temp,coef)
+        return coef[0]
 
 
 def make_translate( x, y, z ):
