@@ -47,7 +47,7 @@ def save_ppm( screen, fname ):
 def save_extension( screen, fname ):
     ppm_name = fname[:fname.find('.')] + '.ppm'
     save_ppm( screen, ppm_name )
-    p = subprocess.run(f'convert {ppm_name} {fname}')
+    p = subprocess.run([f'convert {ppm_name} {fname}'], shell=True)
     if p.stderr != None:
         print(f'err with subprocess: {p.stderr}')
     remove(ppm_name)
